@@ -1,0 +1,38 @@
+doctype html
+html(xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko")
+  head
+    meta(http-equiv="content-type" content="text/html; charset=UTF-8")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title PollK - 실시간 설문조사 웹 어플리케이션
+    link(rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css")
+    link(rel="stylesheet" type="text/css" href="css/style.css")
+    link(rel="stylesheet" type="text/css" href="css/nprogress.css")
+    script(type="text/javascript" data-main="system/main" src="vendor/require.js")
+  body(ng-controller="CommonCtrl")
+
+    <!--[if lte IE 8]>
+    div.alert.alert-danger.text-center(style="width:100%; position:absolute; top:0; left:0; z-index:1040;")
+      button.close(type="button" data-dismiss="alert") &times;
+      | 본 사이트는 <strong>크롬(Chrome)</strong>과 <strong>인터넷 익스플로러(Internet Explorer) 9</strong> 이상 웹 브라우저에 최적화되어 있습니다.
+      | <br/>다음 사이트를 방문하시기 바랍니다. <a href="http://browsehappy.com" target="_blanl">http://browsehappy.com</a>
+    <![endif]-->
+
+    div#container.hide.container
+      div(error-bar message="errorService.errorMessage")
+
+      header
+        p.pull-right: span.badge
+          span.glyphicon.glyphicon-user
+          |  {{userCount}}
+        h3
+          a(href="/") PollK
+          small.mgl2 {{subTitle}}
+        
+      hr
+      div.row
+        div.col-xs-12(ng-view)
+
+      hr
+      footer
+        p Copyright ⓒ <a href="http://www.tested.co.kr" target="_blank">Tested.</a> All Rights Reserved.

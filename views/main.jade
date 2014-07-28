@@ -1,0 +1,58 @@
+
+form(name="pollMain")
+  div.clearfix
+    p.pull-left: a.btn.btn-primary(href="#/poll/new")
+      span.glyphicon.glyphicon-pencil
+      |  설문등록
+    p.pull-right.text-primary
+      span.glyphicon.glyphicon-list-alt
+      |  총 {{count}}건 등록
+
+  div.panel.panel-success
+    div.panel-heading
+      span.glyphicon.glyphicon-home
+      |  설문방 입장
+    div.panel-body
+      div.input-group
+        span.input-group-addon: span.glyphicon.glyphicon-search
+        input.form-control(type="text" name="ticket" ng-model="ticket" maxlength="4" placeholder="방 번호를 입력하세요." ng-pattern="/^[0-9]{4}$/", required)
+        span.input-group-btn
+          button.btn.btn-success(type="button" ng-click="goTicket()" ng-disabled="pollMain.ticket.$invalid")
+            span.glyphicon.glyphicon-log-in
+
+      div.input-group
+        span.input-group-addon: span.glyphicon.glyphicon-lock
+        input.form-control(type="password" ng-model="password" maxlength="4" placeholder="비밀번호가 있을 때 입력하세요.")
+
+  div.panel.panel-info
+    div.panel-heading
+      span.glyphicon.glyphicon-cog
+      |  설문관리
+    div.panel-body
+      div.input-group
+        span.input-group-addon: span.glyphicon.glyphicon-lock
+        input.form-control(type="text" ng-model="managerKey" placeholder="암호키를 입력하세요.")
+        span.input-group-btn
+          button.btn.btn-info(type="button" ng-click="goManager()" ng-disabled="!managerKey")
+            span.glyphicon.glyphicon-log-in
+
+  div.panel.panel-danger
+    div.panel-heading
+      span.glyphicon.glyphicon-tower
+      |  설문결과 보기
+    div.panel-body
+      div.input-group
+        span.input-group-addon: span.glyphicon.glyphicon-lock
+        input.form-control(type="text" ng-model="resultKey" placeholder="암호키를 입력하세요.")
+        span.input-group-btn
+          button.btn.btn-danger(type="button" ng-click="goResult()" ng-disabled="!resultKey")
+            span.glyphicon.glyphicon-log-in
+
+div.panel.panel-warning
+  div.panel-heading
+    span.glyphicon.glyphicon-th-list
+    |  최근 공개 설문 리스트
+  div.list-group
+    a.list-group-item(ng-repeat="poll in polls")
+      span.label(class="label-{{poll.label}}"): span.glyphicon.glyphicon-stats
+      |  {{poll.title}}

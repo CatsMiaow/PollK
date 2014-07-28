@@ -1,0 +1,94 @@
+form(name="pollForm" ng-submit="save()")
+
+  div.bs-callout.bs-callout-danger(ng-show="poll._id"): p 
+    span.text-warning: span.glyphicon.glyphicon-warning-sign
+    |  설문이 진행되고 일정기간 안에 종료되지 않은 설문은 삭제되므로 그 전에 완료하세요.<br />
+    span.text-danger: span.glyphicon.glyphicon-exclamation-sign
+    |  설문 진행/종료 및 이 페이지를 다시 접속하기 위해 반드시 아래 암호키를 저장하세요.<br />
+    span.text-primary
+      span.glyphicon.glyphicon-lock
+      strong  {{poll._id}}
+        
+  div.form-group
+    label.control-label(for="title") 주제
+    input#title.form-control.input-sm(type="text" ng-model="poll.title", required)
+
+  div.form-group
+    label.control-label(for="password") 비밀번호
+    input#password.form-control.input-sm(type="password" ng-model="poll.password" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]+$/")
+    span.help-block
+      span.glyphicon.glyphicon-info-sign
+      |  비공개 설문일 때 비밀번호를 입력하세요. [숫자 4자리]
+
+  div.form-group
+    label.control-label(for="minEntry") 최소 참여 인원수
+    input#minEntry.form-control.input-sm(type="number" ng-model="poll.minEntry" min="4", required)
+    span.help-block
+      span.glyphicon.glyphicon-info-sign
+      |  해당 인원수 이상 입장할 때 설문을 진행할 수 있습니다. [숫자 4이상]
+
+  hr
+  div.form-group(ng-controller="PollCharacterCtrl")
+    label.control-label(for="characters") 설문자 특성 조사&nbsp;
+    button.btn.btn-sm.btn-primary(type="button" ng-click="addCharacter()")
+      span.glyphicon.glyphicon-pencil
+    
+    ul#characters.list-unstyled
+      li.mgt2(ng-repeat="character in poll.characters")
+        div.input-group
+          span.input-group-addon {{$index+1}}
+          input.form-control(type="text" ng-model="character.title" placeholder="문제를 입력하세요.", required)
+          span.input-group-btn
+            button.btn.btn-primary(type="button" ng-click="addCharacterItem($index)" tabindex="-1")
+              span.glyphicon.glyphicon-plus
+            button.btn.btn-danger(type="button" ng-click="removeCharacter($index)" ng-disabled="poll.characters.length <= 1" tabindex="-1")
+              span.glyphicon.glyphicon-trash
+
+        ul.list-unstyled.item_blank
+          li(ng-repeat="item in character.items")
+            div.input-group
+              span.input-group-addon {{$index+1}}
+              input.form-control(type="text" ng-model="item.content" placeholder="항목을 입력하세요.", required)
+              span.input-group-btn
+                button.btn.btn-danger(type="button" ng-click="removeCharacterItem($parent.$index, $index)" ng-disabled="character.items.length <3" tabindex="-1")
+                  span.glyphicon.glyphicon-minus
+
+  hr
+  div.form-group(ng-controller="PollQuestionCtrl")
+    label.control-label(for="questions") 설문 문항&nbsp;
+    button.btn.btn-sm.btn-primary(type="button" ng-click="addQuestion()")
+      span.glyphicon.glyphicon-pencil
+    
+    ul#questions.list-unstyled
+      li.mgt2(ng-repeat="question in poll.questions")
+        p
+          label.radio-inline
+            input(type="radio" ng-model="question.isMulti" value="1")
+            | 객관식
+          label.radio-inline
+            input(type="radio" ng-model="question.isMulti" value="")
+            | 주관식
+        div.input-group
+          span.input-group-addon {{$index+1}}
+          input.form-control(type="text" ng-model="question.title" placeholder="문제를 입력하세요.", required)
+          span.input-group-btn
+            button.btn.btn-primary(type="button" ng-click="addQuestionItem($index)" ng-show="question.isMulti" tabindex="-1")
+              span.glyphicon.glyphicon-plus
+            button.btn.btn-danger(type="button" ng-click="removeQuestion($index)" ng-disabled="poll.questions.length <= 1" tabindex="-1")
+              span.glyphicon.glyphicon-trash
+
+        ul.list-unstyled.item_blank(ng-if="isMulti(question)")
+          li(ng-repeat="item in question.items")
+            div.input-group
+              span.input-group-addon {{$index+1}}
+              input.form-control(type="text" ng-model="item.content" placeholder="항목을 입력하세요.", required)
+              span.input-group-btn
+                button.btn.btn-danger(type="button" ng-click="removeQuestionItem($parent.$index, $index)" ng-disabled="question.items.length <3" tabindex="-1")
+                  span.glyphicon.glyphicon-minus
+
+  hr
+
+  p.text-center
+    button.btn.btn-warning.mgr1(type="button" ng-click="ticketing()" ng-show="poll._id") 설문진행
+    button.btn.btn-success(type="submit" ng-disabled="pollForm.$invalid") 등록
+    button.btn.btn-danger.mgl1(type="button" ng-click="remove()" ng-show="poll._id") 삭제

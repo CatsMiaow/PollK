@@ -1,0 +1,58 @@
+div.bs-callout.bs-callout-info: p
+  span.text-info: span.glyphicon.glyphicon-info-sign
+  |  이 페이지를 공유하려면 페이지 주소를 복사하거나, 아래 암호키를 전달하세요.<br />
+  span.text-primary
+    span.glyphicon.glyphicon-lock
+    |  {{reply._id}}
+
+
+div.page-header
+  h4 특성조사 결과
+    small.mgl2 총 {{poll.characters.length}}건
+
+div(accordion close-others="false")
+  div.mgt4(accordion-group panel-type="warning" ng-repeat="character in poll.characters" is-open="isOpen")
+    div(accordion-heading)
+      | {{character.title}}
+      span.pull-right.glyphicon(ng-class="{'glyphicon-chevron-down': isOpen, 'glyphicon-chevron-right': !isOpen}")
+
+    div.collapse_item(ng-repeat="item in character.items")
+      span.badge {{vote = charCount[character._id].reply[item._id] || 0}}
+      | {{item.content}}
+      div.progress
+        div.progress-bar.progress-bar-info.progress-bar-striped.active(role="progressbar"
+          aria-valuenow="{{vote}}" aria-valuemin="0" aria-valuemax="{{charCount[character._id].total}}"
+          ng-style="{ width:( percent = (vote / charCount[character._id].total * 100 | number:0) ) + '%' }"
+        )
+          | {{percent || 0}}%
+
+
+div.page-header
+  h4 설문조사 결과
+    small.mgl2 총 {{poll.questions.length}}건
+
+div(accordion close-others="true")  
+  div(accordion-group panel-type="success" ng-repeat="question in poll.questions" is-open="isOpen")
+    div(accordion-heading)
+      | {{question.title}}
+      span.pull-right.glyphicon(ng-class="{'glyphicon-chevron-down': isOpen, 'glyphicon-chevron-right': !isOpen}")   
+    
+    div.collapse_item(ng-if="question.isMulti" ng-repeat="item in question.items")
+      span.badge {{vote = itemCount[question._id].reply[item._id] || 0}}
+      | {{item.content}}
+      div.progress
+        div.progress-bar.progress-bar-info.progress-bar-striped.active(role="progressbar"
+          aria-valuenow="{{vote}}" aria-valuemin="0" aria-valuemax="{{itemCount[question._id].total}}"
+          ng-style="{ width:( percent = (vote / itemCount[question._id].total * 100 | number:0) ) + '%' }"
+        )
+          | {{percent || 0}}%
+
+      ul.list-inline(ng-repeat="character in poll.characters")
+        li(ng-repeat="charItem in character.items" ng-init="count = itemData[item._id][character._id][charItem._id] || 0")
+          span.label.label-warning {{charItem.content}}
+          span.label.label-default {{count}}
+          span.label.label-success {{count / (charCount[character._id].reply[charItem._id] || 1)* 100 | number:0}}%
+
+    div.collapse_short(ng-if="!question.isMulti")
+      div.collapse_item(ng-repeat="item in itemShort[question._id]")
+        | {{item.content}}

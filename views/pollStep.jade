@@ -1,0 +1,94 @@
+div(ng-if="!characterStarted && !questionStarted")
+  div.bs-callout.bs-callout-info
+    p: button.btn.btn-link.btn-xs(type="button" ng-click="copyUrl()")
+      span.glyphicon.glyphicon-link.mgr1
+      strong {{href}}
+    p: span.label.label-success.normal
+      span.glyphicon.glyphicon-flag
+      |  방 번호  {{ticket}}
+    p(ng-show="password")
+      span.label.label-danger.normal
+        span.glyphicon.glyphicon-lock
+        |  비밀번호 {{password}}
+
+  div.progress
+    div.progress-bar.progress-bar-striped.active(role="progressbar" aria-valuenow="{{joinCount}}" aria-valuemin="0" aria-valuemax="{{minEntry}}" ng-style="{ width:entryWidth+'%' }")
+      span.glyphicon.glyphicon-user
+      |  {{joinCount}} / {{minEntry}}
+
+  p.help-block
+      span.glyphicon.glyphicon-info-sign
+      |  설문을 진행하기 위한 최소 인원이 입장하길 기다리는 중입니다.
+
+
+div(ng-if="characterStarted || questionStarted")
+  div.clearfix
+    p.pull-left(ng-show="questionStarted")
+      button.btn.btn-primary.mgr2(type="button" ng-disabled="questionNo<1" ng-click="prevQuestion()")
+        span.glyphicon.glyphicon-chevron-left
+        |  이전 설문
+      button.btn.btn-primary(type="button" ng-hide="isLast" ng-disabled="nextButton" ng-click="nextQuestion()")
+        | 다음 설문 
+        span.glyphicon.glyphicon-chevron-right
+      button.btn.btn-warning(type="button" ng-show="isLast" ng-click="showEnd = !showEnd" ng-class="{active: showEnd}")
+        span.glyphicon.glyphicon-cog
+    p.pull-right: span.label.label-default.normal 현재 참여자 {{joinCount}}명
+
+  p.input-group(ng-if="showEnd")
+    span.input-group-addon: span.glyphicon.glyphicon-lock
+    input.form-control(type="text" ng-model="pollId" placeholder="암호키가 필요합니다.")
+    span.input-group-btn
+      button.btn.btn-danger(type="button" ng-click="endQuestion(pollId)" ng-disabled="!pollId")
+        span.glyphicon.glyphicon-off
+
+  div(ng-if="characterStarted")
+    div.progress
+      div.progress-bar.progress-bar-warning.progress-bar-striped.active(role="progressbar" aria-valuenow="{{characterNo+1}}" aria-valuemin="0" aria-valuemax="{{characters.length}}" ng-style="{ width:characterWidth+'%' }")
+        span.glyphicon.glyphicon-stats
+        |  {{characterNo+1}} / {{characters.length}}
+
+    div.panel.panel-warning
+      div.panel-heading: h3.panel-title
+        span.glyphicon.glyphicon-heart-empty.mgr1
+        strong {{characters[characterNo].title}}
+      div.list-group
+        a.list-group-item(href="" ng-repeat="item in characters[characterNo].items" ng-click="selectCharacter($index)")
+          button.btn.btn-default.btn-sm(type="button", disabled) {{$index+1}}
+          | &nbsp; {{item.content}}
+
+  div(ng-if="questionStarted")
+    div.progress
+      div.progress-bar.progress-bar-success.progress-bar-striped.active(role="progressbar" aria-valuenow="{{questionNo+1}}" aria-valuemin="0" aria-valuemax="{{questions.length}}" ng-style="{ width:questionWidth+'%' }")
+        span.glyphicon.glyphicon-question-sign
+        |  {{questionNo+1}} / {{questions.length}}
+
+    div.panel.panel-success
+      div.panel-heading: h3.panel-title
+        strong Q. {{questions[questionNo].title}}
+
+      div.list-group(ng-if="questions[questionNo].isMulti")
+        a.list-group-item(href="" 
+          ng-repeat="item in questions[questionNo].items" ng-click="selectQuestion($index)"
+          ng-class="{active: $index == selectedItem[questionNo], disabled: selectedItem[questionNo] > -1 && $index != selectedItem[questionNo]}"
+        )
+          span.badge {{vote = itemData[questionNo][item._id] || 0}}
+          h4.list-group-item-heading {{item.content}}
+          div.list-group-item-text.progress
+            div.progress-bar.progress-bar-info.progress-bar-striped.active(role="progressbar"
+              aria-valuenow="{{vote}}" aria-valuemin="0" aria-valuemax="{{itemCount[questionNo]}}"
+              ng-style="{ width:( percent = (vote / itemCount[questionNo] * 100 | number:0) ) + '%' }"
+            )
+              | {{percent || 0}}%
+
+      div.panel-body(ng-if="!questions[questionNo].isMulti")
+        div.input-group
+          input.form-control(type="text" ng-model="itemShort.answer" placeholder="답변을 입력하세요." ng-disabled="!nextButton || selectedItem[questionNo]")
+          span.input-group-btn
+            button.btn.btn-warning(type="button" ng-click="answerQuestion()" ng-disabled="!itemShort.answer || !nextButton || selectedItem[questionNo]")
+              span.glyphicon.glyphicon-pencil
+              |  등록
+
+      ul.list-group(ng-if="!questions[questionNo].isMulti")
+        li.list-group-item(ng-repeat="content in itemData[questionNo] track by $index")
+          span.glyphicon.glyphicon-comment.text-primary
+          |  {{content}}

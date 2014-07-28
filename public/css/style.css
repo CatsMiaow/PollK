@@ -1,0 +1,49 @@
+/*
+ * http://getbootstrap.com/customize - 하려 했으나, 원본 소스와 차이가 있어 강제 선언으로 처리
+ * font-family:"돋움",Dotum,"굴림",Gulim,AppleGothic,Sans-serif; color:#383d41;
+ */
+body, input, button { font-size:12px; }
+
+/* custom padding */
+.pdt1 { padding-top   :5px; } .pdt2 { padding-top   :10px; } .pdt3 { padding-top   :15px; } .pdt4 { padding-top   :20px; }
+.pdl1 { padding-left  :5px; } .pdl2 { padding-left  :10px; } .pdl3 { padding-left  :15px; } .pdl4 { padding-left  :20px; }
+.pdr1 { padding-right :5px; } .pdr2 { padding-right :10px; } .pdr3 { padding-right :15px; } .pdr4 { padding-right :20px; }
+.pdb1 { padding-bottom:5px; } .pdb2 { padding-bottom:10px; } .pdb3 { padding-bottom:15px; } .pdb4 { padding-bottom:20px; }
+
+
+/* custom margin */
+.mgt1 { margin-top   :5px; } .mgt2 { margin-top   :10px; } .mgt3 { margin-top   :15px; } .mgt4 { margin-top   :20px; }
+.mgl1 { margin-left  :5px; } .mgl2 { margin-left  :10px; } .mgl3 { margin-left  :15px; } .mgl4 { margin-left  :20px; }
+.mgr1 { margin-right :5px; } .mgr2 { margin-right :10px; } .mgr3 { margin-right :15px; } .mgr4 { margin-right :20px; }
+.mgb1 { margin-bottom:5px; } .mgb2 { margin-bottom:10px; } .mgb3 { margin-bottom:15px; } .mgb4 { margin-bottom:20px; }
+
+
+/* bootstrap */
+span.label.normal { font-size:100%; }
+div.alert { margin-top:10px; }
+div.panel-collapse .panel-body { padding:0px; }
+
+/* bootstrap doc bs-callout */
+.bs-callout { padding:20px; margin-bottom:20px; border:1px solid #eee; border-left-width:5px; border-radius:3px; font-size:14px; }
+.bs-callout h4 { margin-top:0; margin-bottom:5px }
+.bs-callout p:last-child { margin-bottom:0 }
+.bs-callout code { border-radius:3px }
+.bs-callout+.bs-callout { margin-top:-5px }
+.bs-callout-danger { border-left-color:#d9534f }
+.bs-callout-danger h4 { color:#d9534f }
+.bs-callout-warning { border-left-color:#f0ad4e }
+.bs-callout-warning h4 { color:#f0ad4e }
+.bs-callout-info { border-left-color:#5bc0de }
+.bs-callout-info h4 { color:#5bc0de }
+
+
+/* content */
+#container { max-width:600px; }
+.pagination a, .pager a { cursor:pointer; }
+.item_blank { margin-left:33px; }
+.collapse_item { font-size:14px; padding:10px; border-bottom:1px solid #ddd; }
+.collapse_item:last-child { border-bottom:none; }
+.collapse_item .progress { margin:5px 0 0 0; }
+.collapse_item span.badge { float:right; }
+.collapse_item ul { margin-bottom:0; margin-top:5px; }
+.collapse_short { overflow:auto; max-height:300px; }

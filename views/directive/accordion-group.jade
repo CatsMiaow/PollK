@@ -1,0 +1,8 @@
+div.panel(class="panel-{{panelType}}")
+  div.panel-heading
+    h4.panel-title
+      a.accordion-toggle(href="" ng-click="toggleOpen()" accordion-transclude="heading")
+        span(ng-class="{'text-muted': isDisabled}") {{heading}}
+    
+  div.panel-collapse(collapse="!isOpen")
+    div.panel-body(ng-transclude)
