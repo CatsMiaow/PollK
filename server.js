@@ -22,7 +22,7 @@ mongoose.connection.on('error', function(err) {
 // Reconnect when Closed
 mongoose.connection.on('disconnected', function() {
     // console.log('Mongoose Reconnect!!');
-    connectMongoDB();
+    // connectMongoDB();
 });
 
 connectMongoDB();

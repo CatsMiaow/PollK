@@ -41,7 +41,7 @@ exports.list = function(req, res) {
 
             Poll.count(req.query.search, function(err, count) {
                 if (err) {
-                    return res.send(500, err);
+                    return res.status(500).send(err);
                 }
 
                 callback(null, count);
@@ -54,7 +54,7 @@ exports.list = function(req, res) {
                 .skip(req.query.offset).limit(req.query.limit)
                 .sort('-created').exec(function(err, polls) {
                     if (err) {
-                        return res.send(500, err);
+                        return res.status(500).send(err);
                     }
 
                     var data = {};
@@ -90,7 +90,7 @@ exports.create = function(req, res) {
 
     poll.save(function(err) {
         if (err) {
-            return res.send(500, err);
+            return res.status(500).send(err);
         }
         
         res.json(poll);
@@ -106,7 +106,7 @@ exports.update = function(req, res) {
 
     poll.save(function(err) {
         if (err) {
-            return res.send(500, err);
+            return res.status(500).send(err);
         }
 
         res.json(poll);
@@ -118,7 +118,7 @@ exports.remove = function(req, res) {
 
     poll.remove(function(err) {
         if (err) {
-            return res.send(500, err);
+            return res.status(500).send(err);
         }
 
         res.json(poll);
@@ -128,14 +128,14 @@ exports.remove = function(req, res) {
 exports.ticketing = function(req, res) {
     var poll = req.poll;
     if (poll.started || poll.ticket) {
-        return res.send(500, '이미 진행된 설문입니다.');
+        return res.status(500).send('이미 진행된 설문입니다.');
     }
     
     Poll.find({ // 진행 중인 설문들의 방 번호를 추출
         ticket: { $exists: true }
     }, '-_id ticket', function(err, polls) {
         if (err) {
-            return res.send(500, err);
+            return res.status(500).send(err);
         }
 
         var tickets = []; // 진행 중인 방 번호를 가져와서
@@ -158,7 +158,7 @@ exports.ticketing = function(req, res) {
         poll.ticket = getTicket();
         poll.save(function(err) {
             if (err) {
-                return res.send(500, err);
+                return res.status(500).send(err);
             }
 
             res.json({ ticket: poll.ticket }); 
@@ -177,7 +177,7 @@ exports.step = {
             ]
         }, '-_id', function(err, poll) {
             if (err || !poll) {
-                return res.send(500, err || '진행 중인 설문이 아닙니다.');
+                return res.status(500).send(err || '진행 중인 설문이 아닙니다.');
             }
 
             res.json(poll);
@@ -191,7 +191,7 @@ exports.step = {
             ticket  : null
         }, '-_id', function(err, poll) {
             if (err || !poll) {
-                return res.send(500, err || '종료된 설문이 아닙니다.');
+                return res.status(500).send(err || '종료된 설문이 아닙니다.');
             }
 
             res.json({

@@ -116,7 +116,7 @@ require([
                 });
 
                 Socket.on('error', function(e) {
-                    ErrorService.setError('A unknown error occurred ' + e);
+                    ErrorService.setError(e || 'A unknown error occurred');
                     $cookieStore.remove('poll');
                     $rootScope.beforeUnload = false;
                     $window.location.href = '/';

@@ -10,8 +10,11 @@ module.exports = function(io) {
 
         if (data.headers.cookie) {
             data.cookie = require('cookie').parse(data.headers.cookie);
-
             socket.sessionID = data.cookie['express.sid'];
+
+            if (!socket.sessionID) {
+                next(new Error('No session transmitted.'));
+            }
         } else {
            next(new Error('No cookie transmitted.'));
         }

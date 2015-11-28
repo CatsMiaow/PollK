@@ -13,7 +13,8 @@ exports.poll = function(socket, io) {
     var sID = crypto.createHash('md5').update(socket.sessionID).digest('hex');
 
     function joinCount(ticket) {
-        io.to(ticket).emit('join:count', Object.keys(io.sockets.adapter.rooms[ticket]).length);
+        var room = io.sockets.adapter.rooms[ticket] || {};
+        io.to(ticket).emit('join:count', Object.keys(room).length);
     }
 
     // 설문입장
