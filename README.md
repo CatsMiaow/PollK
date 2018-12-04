@@ -3,8 +3,8 @@ PollK
 
 MEAN Stack 기반의 실시간 설문조사 웹 애플리케이션
 
-* 테스티드 <http://www.tested.co.kr>
-* 샘플 사이트 <http://poll.tested.co.kr>
+* 테스티드 <https://tested.kr>
+* ~~샘플 사이트 <http://poll.tested.co.kr>~~
 * 페이지 스크린샷 <http://goo.gl/fQVsgJ>
 * MEAN Stack 기반에 대한 소개는 [링크](https://github.com/CatsMiaow/MEAN_Stack_Structure) 참고
 
